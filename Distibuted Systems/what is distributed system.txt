@@ -1,0 +1,7 @@
+A distributed system is a set of processes which communicate on unreliable network using messages, not sharing memory or global clocks and most importantly coordinate in such a way that it looks like a single system or process.
+
+The interesting and diffuclt task is that even when a process or computer fails or crashes or slowes down the others have to make sure the play does not stop.
+
+A distributed system can also be defined as something where state resides in more than one machine, the only way to communicate is through messages over network, can component can fail at any time independently or may slow down or partial failure.
+
+James Gosling proposal: the root cause of failure of distributed system is assuming the following: network is reliable, latency is 0, bandwidth is infinite.
