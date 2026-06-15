@@ -5,3 +5,43 @@ The interesting and diffuclt task is that even when a process or computer fails 
 A distributed system can also be defined as something where state resides in more than one machine, the only way to communicate is through messages over network, can component can fail at any time independently or may slow down or partial failure.
 
 James Gosling proposal: the root cause of failure of distributed system is assuming the following: network is reliable, latency is 0, bandwidth is infinite.
+
+why it matters: 
+
+scale, fault tolerant, latency, reliabiliy.
+
+when to even use distributed system: when the above 4 outweight the cost in complexity (distributed complexity).
+
+when not to use distributed system: if dataset fits in ram in one box (20-25TB RAM), when QPS is <= few ten thousands, strong inconsistency and small team.
+
+"Distribution is price we pay, not a feature we gain"
+
+
+--------------------
+
+Models:
+
+1. The Archipelago (Stale Rumors)
+
+so every information a node recieves over network is historical. we must design system assuming the currect state as probabilistic rumor.
+
+ex: When a driver process receives a heartbeat from an executor indicating it has 2GB of free memory, that is not a fact about the present; it is a fact about the executor at the exact millisecond that packet was constructed.
+
+
+2. Partial Failure is the Defining Property
+
+on a single machine a failure can be indicated by some stack trace, but in distributed environment its timeout which is one of the dangers of engineering.
+
+for instance: lets say we send a message to kafka broker after 5 seconds it throws timeout exception. now any of the below can be cause of this:
+
+The wire ate it: The request dropped before reaching the NIC (Network Interface Card).
+
+Pre-execution crash: The request reached the OS buffer, but the database process segfaulted before reading it.
+
+Post-execution crash: The database successfully committed the transaction to disk, but the kernel panicked before it could send the ACK back.
+
+The zombie node: The node is perfectly fine, but a massive Garbage Collection (GC) pause has frozen the JVM, so it hasn't processed the request yet.
+
+The return wire ate it: The operation succeeded, but the ACK packet was dropped by a faulty router on the way back to you.
+
+
