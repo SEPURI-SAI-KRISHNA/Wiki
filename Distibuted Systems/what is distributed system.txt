@@ -74,3 +74,24 @@ timing models:
 2. Asynchronous: we dont know how long it will take to reply maybe 10s or 10 years.the CPU has to wait. here the timeout tell nothing because the other node might be dead or slow.
 
 3. Partially Synchronous: the system behaves Asynchronous most of time, however network stablizes over time and latency and delay will become normal bound. this is called GST(global stabilization time).
+
+failure models: from easiest to handle to toughest.
+
+1. crash stop: here the node crashes and stop.
+
+2. crash recovery: here the node crashed and recovers. we need protocol in place to handle this kind of nodes.
+
+3. omission: here the node is good but the network drops the messages in and out.
+
+4. Byzantine: the node is active and behaving malicious maybe hacked and sending conflicting information to other nodes ultimately breaking the protocols.
+
+but why do we need all nodes to agree why not majority. here comes the magic of quorum. 
+
+ex: For normal crash faults, a quorum q must be more than half the nodes: q >= n/2 + 1.
+
+The Proof: If you have 5 nodes, a quorum is 3. Any two quorums of 3 must overlap by at least 1 node (since 3 + 3 = 6, which is > 5). That overlapping node is the "memory" of the system. It knows about the previous decision and prevents the new quorum from contradicting it.
+
+
+The Core Impossibility Results
+
+1. Two Generals Problem: 
