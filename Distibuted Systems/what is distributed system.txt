@@ -44,4 +44,18 @@ The zombie node: The node is perfectly fine, but a massive Garbage Collection (G
 
 The return wire ate it: The operation succeeded, but the ACK packet was dropped by a faulty router on the way back to you.
 
+so here we cannot know which exactly might have caused the timeout. so every state mutating operations must be idempotent.
+
+3. There is no "now": according to Einstein's theory of relative states there is no absolute simultaneity. the same applies for distributed systems where we cant get the exact global current state at the moment.
+   To handle this modern systems (flink) use markers, hen reached the marker it gets the state of each node like a snapshot and pass it to next node resulting in global snapshot even if they are happening at different times.
+
+4. The Message-Passing Graph: Because there is no global clock, we dont measure time in seconds, but in causality.
+
+You draw the nodes as vertical lines. You draw the messages as diagonal arrows. If your distributed transaction protocol requires Node 1 to know about Node 3's lock release, there must be an unbroken chain of arrows from Node 3 back to Node 1. If there isn't, your architecture has a race condition.
+
+5. Asynchrony as an Adversary: do not design for happy path. build an adversary system to challenge the system as it tests realtime issues and how the system is currectly handling it.
+
+6. End-to-End Argument: a common mistake is trusting the infrastructure to guarantee application correctness. 
+
+ex: If your application crashes nanoseconds after the OS ACKs the TCP packet, that data is gone forever, even though the network layer says "delivered successfully." This is why robust pipelines don't just trust TCP; they use application-level offsets, logical checksums, and cryptographic hashing at the very edges of the system to verify the data was actually processed. The network in the middle is just a fast, unreliable pipe.
 
