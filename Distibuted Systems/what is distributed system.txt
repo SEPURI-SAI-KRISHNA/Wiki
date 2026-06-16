@@ -59,3 +59,18 @@ You draw the nodes as vertical lines. You draw the messages as diagonal arrows. 
 
 ex: If your application crashes nanoseconds after the OS ACKs the TCP packet, that data is gone forever, even though the network layer says "delivered successfully." This is why robust pipelines don't just trust TCP; they use application-level offsets, logical checksums, and cryptographic hashing at the very edges of the system to verify the data was actually processed. The network in the middle is just a fast, unreliable pipe.
 
+the atomic events in distributed system
+
+1. internal computation
+
+2. send data over network
+
+3. receive data over network
+
+timing models:
+
+1. Synchronous: where we know after a certain time if node is not responding its 100% mathematically certainly dead.
+
+2. Asynchronous: we dont know how long it will take to reply maybe 10s or 10 years.the CPU has to wait. here the timeout tell nothing because the other node might be dead or slow.
+
+3. Partially Synchronous: the system behaves Asynchronous most of time, however network stablizes over time and latency and delay will become normal bound. this is called GST(global stabilization time).
